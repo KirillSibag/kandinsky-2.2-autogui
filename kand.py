@@ -1,4 +1,4 @@
-import pyautogui, random
+import pyautogui
 from time import sleep
 import pickle
 
