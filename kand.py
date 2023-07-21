@@ -1,8 +1,9 @@
+## импорт необходимых библиотек
 import pyautogui
 from time import sleep
 import pickle
 
-
+## открытие файла с запросами
 try:
     with open("data.pickle", "rb") as f:
         data = pickle.load(f)
@@ -10,12 +11,11 @@ except Exception as ex:
     print("Error during unpickling object (Possibly unsupported):", ex)
 
 diction = []
-
 for i in data:
     a = str(i)
     diction.append(a[0:len(i)-1])
 
-
+## циклов по 10 генераций
 times = 100
 m = ' '
 d = ', '
@@ -28,15 +28,18 @@ pyautogui.FAILSAFE = True
 pyautogui.size()
 pyautogui.position()
 
+## функция ожидания
 def delay(time):
     sleep(time)
-    
+
+## горячие клавиши
 def ctrl(letter):
     pyautogui.hotkey('ctrl', letter)
 
 def alt(lett):
     pyautogui.hotkey('alt', lett)
 
+## перемещение мыши, клик и энтер
 def mouse(x, y):
     pyautogui.moveTo(x, y, duration=0)
     cl()
@@ -55,14 +58,21 @@ def move(x, y):
 
 
 
-
+##главная функция
 def main001():
     print("готов!")
+    ## ожидание 6 секунд
     delay(6)
+
+    ## цикл циклов генерации
     for j in range(times):
+        ## список для сохранения имён изображений
         picture_names = []
-        
+
+        ## 10 раз генерация. Пока происходит вбивание новых 
+        ## запросов, старые генерации завершаются
         for i in range(10):
+            ## новая вкладка
             ctrl('t')
 
             #перейти на сайт
@@ -70,10 +80,13 @@ def main001():
             ent()
             delay(1.4)
 
-
+            
+            ## запрос
             prompt = diction[0]
+            ## больше не используем
             diction.remove(diction[0])
 
+            ## стиль: обычный или аниме
             vb = random.randint(0, 2)
             
             if vb > 1:
@@ -85,16 +98,11 @@ def main001():
                 picture_names.append("a " + prompt)
                 
 
+            ## клик на поле запроса
             mouse(800, 970)
-            
-
-            
             
             #ввести промпт
             prnt(prompt)
-                 
-
-            
             delay(0.2)
 
             #начать генерацию
@@ -102,24 +110,25 @@ def main001():
             delay(0.2)
 
             
-
+        ## переход на первую пустую вкладку и её закрытие
         ctrl('tab')
+        ## здесь сохранятся все названия сохранённых изображений:
         file = open("fni.txt", "w+")
         for i in range(10):
             ctrl('w')
             #щелк по фотке
             mouse(950, 600)
             
-            #загрузить
-            
+            #загрузить (значок папки)
             mouse(860, 970)
             delay(0.4)
             
-            #по сохранению
+            #по сохранению (значок папки рядом с фоткой)
             mouse(1709, 167) 
             delay(0.3)
 
-            h = 360
+            ## пока не добрались до подсвеченного - идём вниз
+            h = 354
             corr = 0
             count = 0
             while corr == 0 and count < 15:
@@ -138,21 +147,25 @@ def main001():
                 delay(0.6)
                
 
-                #имя
+                # переименовываем и пишем в файл
                 file.write(picture_names[i] + "\n")
                 prnt(picture_names[i])
                 
                 ent()
                 delay(0.3)
-                
+
+            ## зкрываем окно загрузок
             mouse(1895, 10)
             delay(0.4)
 
+        ## тыкаем по иконке файрфокса
         file.close()
         mouse(251, 1060)
         delay(0.1)
+        ## выбираем вкладку
         mouse(251, 950)
         delay(0.3)
+        ## делаем новую вкладку
         ctrl('n')
         delay(0.5)
 
